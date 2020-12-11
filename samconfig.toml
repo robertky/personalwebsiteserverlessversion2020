@@ -1,0 +1,10 @@
+version = 0.1
+[default]
+[default.deploy]
+[default.deploy.parameters]
+stack_name = "personal-website-github-actions-app"
+s3_bucket = "kyle-roberts-personal-website-backend"
+s3_prefix = "sam-app"
+region = "us-east-1"
+confirm_changeset = false
+capabilities = "CAPABILITY_IAM"

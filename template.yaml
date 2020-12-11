@@ -1,0 +1,48 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: 'AWS::Serverless-2016-10-31'
+Description: >-
+  A simple backend (read/write to DynamoDB) with a API endpoint using Amazon API Gateway.
+#Parameters:
+#  TableNameParameter:
+#    Type: String
+
+Globals:
+  #https://github.com/awslabs/serverless-application-model/blob/develop/docs/globals.rst
+  Function:
+    Runtime: python3.8
+    MemorySize: 512
+    Environment:
+      Variables:
+        TABLE_NAME:
+          Ref: Table
+        REGION_NAME:
+          Ref: AWS::Region
+
+Resources:
+  microservicehttpendpointpython3:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      Handler: lambda_handler.lambda_handler
+      CodeUri: .
+      Description: >-
+        A simple backend (read/write to DynamoDB) with a RESTful API endpoint using Amazon API Gateway.
+      Timeout: 10
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref Table
+      Events:
+        Api1:
+          Type: Api
+          Properties:
+            Path: /viewcounter
+            Method: GET
+  #Sets up the table and sets the read and write provisions
+  Table:
+    Type: AWS::Serverless::SimpleTable
+    Properties:
+      PrimaryKey:
+        Name: VisitorID
+        Type: String
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1

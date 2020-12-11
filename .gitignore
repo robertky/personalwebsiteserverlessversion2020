@@ -1,0 +1,4 @@
+.aws-sam/
+.idea/
+__pycache__/
+./commands.sh
